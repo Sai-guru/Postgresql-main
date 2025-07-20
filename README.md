@@ -1,6 +1,6 @@
 ---
 
-# 🚀 Full-Stack PERN + TypeScript CRUD App
+# 🚀 Full-Stack PERN + TypeScript CRUD website
 
 A complete full-stack web application built with **PostgreSQL**, **Express**, **React**, and **Node.js**, using **TypeScript** across the stack. It performs full CRUD operations and follows clean architectural patterns with environment variables, modern tooling, and Postman-tested endpoints.
 
