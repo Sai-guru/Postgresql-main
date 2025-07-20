@@ -1,5 +1,3 @@
-Absolutely! Here's a clean and professional `README.md` for your **Full-Stack PostgreSQL + TypeScript CRUD App**, including emojis, project intro, folder structure, tools used, setup steps, and tech stack:
-
 ---
 
 # 🚀 Full-Stack PERN + TypeScript CRUD App
