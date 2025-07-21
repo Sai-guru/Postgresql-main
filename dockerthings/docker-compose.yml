@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      -     ports:
+      - "5001:5000"
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=aa5940530
+      - DB_NAME=crudtutoinpostgresql
+      - DB_TABLENAME=demo
+      - PORT=5000
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_BACKEND_URL=http://backend:5000
+      - VITE_POSTGRES_TABLE_NAME=demo
+    depends_on:
+      - backend
+    restart: unless-stopped

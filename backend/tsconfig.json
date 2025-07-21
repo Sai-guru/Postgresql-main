@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "outDir": "dist",
     "skipLibCheck": true
   },
   "ts-node": {

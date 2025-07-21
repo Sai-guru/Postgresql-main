@@ -6,13 +6,13 @@ dotenv.config();
 // CRUD function imports
 import { newData, getData, getDataById, updateDataById, deleteDataById } from './crudOPS';
 const app: Application = express();
-const PORT =  5000;
+const PORT = Number(process.env.PORT) || 4000;
 
 app.use(express.json());
 app.use(cors(
-    {
-        origin: 'http://localhost:5173' 
-    }
+    // {
+    //     origin: 'http://localhost:5173' 
+    // }
 ));
 
 // Optional root endpoint
@@ -26,7 +26,7 @@ app.get(`/data/${tableName}/:id`, getDataById);
 app.put(`/data/${tableName}/:id`, updateDataById);
 app.delete(`/data/${tableName}/:id`, deleteDataById);
 
-app.listen(PORT, () => {
+app.listen(PORT , () => {
   console.log(`✅ Server is running on port ${PORT}`);
   console.log("Table Name:", tableName);
 

@@ -1,0 +1,23 @@
+# Use lightweight Node.js 22 Alpine base image
+FROM node:22-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy rest of the app code
+COPY . .
+
+# Build TypeScript into dist/
+RUN npm run build
+
+# Expose backend server port
+EXPOSE 4000
+
+# Start the server in production mode
+CMD ["npm", "start"]
