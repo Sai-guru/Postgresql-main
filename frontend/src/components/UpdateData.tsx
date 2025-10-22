@@ -12,7 +12,7 @@ const UpdateData = () => {
       return;
     }
     e.preventDefault();
-   const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/data/${import.meta.env.VITE_POSTGRES_TABLE_NAME}/${form.id}`, {name: form.name,email: form.email,is_active: form.is_active });
+   const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/root/data/${form.id}`, {name: form.name,email: form.email,is_active: form.is_active });
     alert('Data Updated!');
     console.log("Backend response:", res.data);
     setForm({id : 0, name:'', email:'', is_active:true}); // Reset form after submission

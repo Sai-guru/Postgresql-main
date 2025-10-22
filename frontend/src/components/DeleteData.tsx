@@ -11,7 +11,7 @@ const DeleteData = () => {
       return;
     }
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/data/${import.meta.env.VITE_POSTGRES_TABLE_NAME}/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/root/data/${id}`);
       alert('Data Deleted!');
       setId(null);
     } catch (err) {

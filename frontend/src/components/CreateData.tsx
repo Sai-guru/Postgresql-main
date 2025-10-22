@@ -9,7 +9,7 @@ const CreateData = () => {
     const handleSubmit = async(e :React.FormEvent)=> {
         e.preventDefault();
         try {
-            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/data/${import.meta.env.VITE_POSTGRES_TABLE_NAME}`, form);
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/root/data-new`, form);
             console.log("Backend response:", res.data);
             alert('Data Created!');
             setForm({name:'',email:'',is_active:true}); // Reset form after submission

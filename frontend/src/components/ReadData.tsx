@@ -8,7 +8,7 @@ const ReadData = () => {
     useEffect(()=> {
         const fetchData = async()=> {
             try {
-                  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/data/${import.meta.env.VITE_POSTGRES_TABLE_NAME}`);
+                  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/root/data`);
                     setData(res.data);
             }catch(err) {
                 console.error("Error fetching data:", err);
