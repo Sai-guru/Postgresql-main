@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "rootDir": "./",
-    "outDir": "./",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,9 +12,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
-    "noEmitOnError": true,
-    "allowImportingTsExtensions": true,
+    //"incremental": true,
+   // "noEmitOnError": true,
+   // "allowImportingTsExtensions": true,
   },
-  "include": ["server.ts"]
+  "include": ["/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

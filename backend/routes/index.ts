@@ -1,5 +1,5 @@
 import express from 'express';
-import { newData, getData, getDataById, updateDataById, deleteDataById} from '../controllers/controller.ts';
+import { newData, getData, getDataById, updateDataById, deleteDataById} from '../controllers/controller.js';
 export const routerEndPoints = express.Router();
 
 routerEndPoints.post(`/data-new`, newData);

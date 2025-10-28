@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { routerEndPoints } from "./routes/index.ts";
+import { routerEndPoints } from "./routes/index.js";
 dotenv.config();
 // CRUD function imports
 const app: Application = express();
