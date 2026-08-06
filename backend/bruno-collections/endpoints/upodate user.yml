@@ -1,0 +1,21 @@
+info:
+  name: upodate user
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: http://localhost:4000/api/24
+  body:
+    type: json
+    data: |-
+      {
+        "name":"jamudfsfd","email":"jamun@gmail.com","is_active":true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
