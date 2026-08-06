@@ -8,7 +8,7 @@ const ReadData = () => {
     useEffect(()=> {
         const fetchData = async()=> {
             try {
-                  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/root/data`);
+                  const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api`);
                     setData(res.data);
             }catch(err) {
                 console.error("Error fetching data:", err);

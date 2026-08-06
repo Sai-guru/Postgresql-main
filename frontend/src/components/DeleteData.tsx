@@ -11,7 +11,7 @@ const DeleteData = () => {
       return;
     }
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/root/data/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/${id}`);
       alert('Data Deleted!');
       setId(null);
     } catch (err) {
