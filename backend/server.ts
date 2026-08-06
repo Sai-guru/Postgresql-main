@@ -2,8 +2,9 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { routerEndPoints } from "./routes/index.js";
+import { routerEndPoints } from "./src/routes/user.route.js";
 dotenv.config();
+
 // CRUD function imports
 const app: Application = express();
 const PORT = Number(process.env.PORT) || 4000;
@@ -16,12 +17,13 @@ app.use(
   //     origin: 'http://localhost:5173'
   // }
 );
-app.use('/root',routerEndPoints);
+app.use('/api',routerEndPoints);
 
-// Optional root endpoint
-// app.get('/', (_req: Request, res: Response) => {
-//   res.send('Welcome to the PostgreSQL CRUD API');
-// });
+// health endpoint
+
+app.get('/health', (_req: Request, res: Response) => {
+  res.send('Welcome to the PostgreSQL CRUD API');
+});
 
 
 
