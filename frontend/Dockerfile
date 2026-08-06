@@ -1,5 +1,3 @@
-
-#stage 1 - for building this using node
 FROM node:22-alpine AS builder
 
 WORKDIR /app
@@ -10,14 +8,4 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build 
-
-#stage 2 - for running this using nginx
-
-FROM nginx:stable-alpine
-
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm run build

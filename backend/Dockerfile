@@ -7,13 +7,16 @@ COPY package*.json ./
 
 RUN npm install
 
+#prisma steps here...
+COPY prisma ./prisma
+RUN npx prisma generate
+
 COPY . .
 
-RUN npx prisma generate
 RUN npm run build
 RUN npm prune --production
 
-EXPOSE 5000
+EXPOSE 4000
 
 CMD ["node", "dist/server.js"]
 
