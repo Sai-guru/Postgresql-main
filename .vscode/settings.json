@@ -1,10 +1,13 @@
 {
+  
   // "chat.disableAIFeatures": true,
-  // "chat.agent.enabled": false,
-  // "editor.inlineSuggest.enabled": false,
+  "chat.agent.enabled": false,
+  "editor.inlineSuggest.enabled": false,
   "files.exclude": {
     "**/.vscode": false
   },
+  //pinned to prisma 6 from 7 bcos of that env arguemnt needed for the docker to validate it..If not then we can completely comment it out
+  "prisma.pinToPrisma6": true
   // "files.readonlyInclude": {
   //   "**/.vscode": true
   // }
