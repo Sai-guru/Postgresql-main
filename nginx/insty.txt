@@ -1,0 +1,81 @@
+
+## How Your Docker Setup Works
+
+### Port 4000 is private on purpose
+
+Your backend does NOT expose port 4000 to your computer. That's correct and intentional.
+
+Docker Compose creates a private internal network. Inside that network, containers talk to each other using their **service names** as hostnames.
+
+```
+nginx container  →  http://backend:4000  →  backend container
+```
+
+Your browser never hits port 4000 directly. It only talks to Nginx on port 80, and Nginx handles the rest behind the scenes. This is actually **good security** — the backend is hidden from the outside world.
+
+---
+
+### What your `nginx.conf` is doing
+
+**`events {}`** — Required by Nginx. Handles low-level connection stuff. Empty is fine for now.
+
+**`http {}`** — Says "this Nginx handles normal web traffic"
+
+**`server {}`** — Defines one server config, `listen 80` means it catches everything on port 80
+
+So when you open `http://localhost` in your browser, Nginx is the first thing that receives it.
+
+---
+
+### `location /api/` — the magic routing
+
+```nginx
+location /api/ {
+    proxy_pass http://backend:4000;
+}
+```
+
+Any request starting with `/api/` gets forwarded to the backend container. So:
+
+- Browser hits `http://localhost/api/users`
+- Nginx catches it, forwards to `http://backend:4000/api/users`
+- Backend processes it, sends response back through Nginx to the browser
+
+**`location /`** — Everything else (React SPA) gets served as static files with SPA fallback (`try_files`), so React Router works properly.
+
+---
+
+### Proxy headers — why they matter
+
+```nginx
+proxy_set_header Host              $host;
+proxy_set_header X-Real-IP         $remote_addr;
+proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+```
+
+When Nginx forwards a request to the backend, the backend would normally think "the request came from Nginx, not the real user." These headers fix that:
+
+- **Host** — sends the domain the user typed (like `localhost`)
+- **X-Real-IP** — sends the user's actual IP address
+- **X-Forwarded-For** — keeps a chain of all proxies (useful if you add Cloudflare etc. later)
+- **X-Forwarded-Proto** — tells backend if it was `http` or `https`
+
+Without these, your backend logs would show all requests coming from the same internal Docker IP — useless for debugging.
+
+---
+
+### The full picture
+
+```text
+Your Browser
+    ↓  (localhost:80)
+Nginx Container
+    ↓  /api/*  →  backend:4000 (private Docker network)
+    ↓  /*      →  React static files
+Backend Container
+    ↓
+Cloud Database
+```
+
+//given an explanation by me and an AI...

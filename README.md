@@ -1,26 +1,26 @@
 ---
-# 🚀 Full-Stack PERN + TypeScript CRUD website
+# 🚀 Full-Stack PERN + TypeScript CRUD Website
 
-A complete full-stack web application built with **PostgreSQL**, **Express**, **React**, and **Node.js**, using **TypeScript** across the stack. It performs full CRUD operations and follows clean architectural patterns with environment variables, modern tooling, and Postman-tested endpoints.
+A complete full-stack web application built with **PostgreSQL**, **Express**, **React**, and **Node.js**, using **TypeScript** across the stack.
 
-🔐 Built with secure `.env` handling, modular file structure, and a focus on **clean dev practices**.
+It supports full **CRUD operations**, follows a clean backend architecture, and includes **Docker**, **Docker Compose**, and **Nginx** for a more production-like setup.
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
-```
-fullstack-crud-app/
+```bash
+postgresql-main/
 ├── backend/
-│   |
-│   ├── prisma
-|   |      └── schema.prisma
-│   ├── routes
-|   |      └── index.ts
-│   ├── controllers
-|   |      └── controller.ts      
+│   ├── prisma/
+│   │   └── schema.prisma
+│   ├── routes/
+│   │   └── index.ts
+│   ├── controllers/
+│   │   └── controller.ts
 │   ├── server.ts
+│   ├── Dockerfile
 │   ├── package.json
-|   |── .env.example
+│   ├── .env.example
 │   ├── .env
 │   └── tsconfig.json
 │
@@ -30,133 +30,192 @@ fullstack-crud-app/
 │   │   ├── App.tsx
 │   │   └── components/
 │   │       ├── Home.tsx
-|   |       |__ Layout.tsx
+│   │       ├── Layout.tsx
 │   │       ├── CreateData.tsx
 │   │       ├── ReadData.tsx
 │   │       ├── UpdateData.tsx
 │   │       └── DeleteData.tsx
+│   ├── Dockerfile
 │   ├── vite.config.ts
 │   ├── package.json
 │   ├── .env
 │   └── tsconfig.json
+│
+├── nginx/
+│   └── nginx.conf
+│
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
 
-## 🧰 Technologies & Libraries
+## 🧰 Technologies Used
 
-### 🌐 Frontend (`React + Vite + TypeScript`)
+### Frontend
 
-- `react`, `react-dom`, `react-router-dom`
-- `vite` for ultra-fast dev server
-- `.env` for API config
+- React
+- Vite
+- TypeScript
+- React Router
 
-### 🚀 Backend (`Express + TypeScript`)
+### Backend
 
-- `express`, `cors`, `pg` for PostgreSQL
-- `dotenv` for env variables
-- `watch`, `tsx` for dev server
-- `typescript` + `tsconfig` for strong typing
+- Node.js
+- Express
+- TypeScript
+- Prisma
+- PostgreSQL
 
-### 🐘 Database
+### Dev / Deployment
 
-- `PostgreSQL` via local instance (managed using `pgAdmin`)
-- Tested using `Postman`
-- Queries written using raw SQL (via `pg`)
-
----
-
-## ⚙️ Setup Instructions
-
-### ✅ Prerequisites
-
-- Node.js (v18+)
-- PostgreSQL installed
-- pnpm / npm / yarn
+- Docker
+- Docker Compose
+- Nginx
 
 ---
 
-### 🔧 Backend Setup
+## ⚙️ Features
+
+- Full CRUD functionality
+- REST API endpoints
+- Modular backend architecture
+- PostgreSQL database integration
+- Prisma ORM support
+- Dockerized frontend and backend
+- Nginx reverse proxy setup
+- Environment-based config with `.env`
+
+---
+
+## 🏗️ Backend Architecture
+
+The backend is organized into a simple and scalable structure:
+
+- `server.ts`  
+  Main entry point for the Express server
+
+- `routes/index.ts`  
+  Defines API routes
+
+- `controllers/controller.ts`  
+  Handles request logic and database actions
+
+- `prisma/schema.prisma`  
+  Database schema and Prisma model definitions
+
+This keeps the code clean and easier to maintain as the project grows.
+
+---
+
+## 🐘 Prisma Schema Note
+
+In `backend/prisma/schema.prisma`, the database URL is loaded using:
+
+```prisma
+url = env("DATABASE_URL")
+```
+
+### Important:
+
+- If you are running the project **locally without Docker**, you can keep this line as-is.
+- If you are using **Docker or Docker Compose**, this setup works fine as well.
+- If needed for local testing or validation, you can comment/uncomment this line depending on your environment.
+
+So:
+
+- **Docker / Compose** → no problem, leave it as configured
+- **Local run** → adjust only if your Prisma/Docker setup requires it
+
+---
+
+## 🌐 Nginx Setup
+
+Nginx is used as a reverse proxy in front of the backend.
+
+### Example behavior:
+
+- Requests to `/api/` are forwarded to the backend service
+- The backend service is reached through Docker Compose networking
+
+Example Nginx config:
+
+```nginx
+location /api/ {
+    proxy_pass http://backend:4000;
+}
+```
+
+This makes the app cleaner and closer to a real production deployment.
+
+---
+
+## 🚀 Running the Project
+
+### With Docker Compose
+
+```bash
+docker compose up --build
+```
+
+### Backend only
 
 ```bash
 cd backend
-cp .env.example .env  # Add your Neon (cloud) PostgreSQL credentials -- do NOT commit .env
 npm install
-npm run dev            # Starts backend with tsx watch (see package.json)
+npm run dev
 ```
 
-Contents of `backend/.env.example` (Neon-ready):
-
-```
-# Example pooled connection (Runtime - recommended)
-DATABASE_URL="postgresql://<NEON_USER>:<NEON_PASSWORD>@<NEON_HOST>/<NEON_DB>?sslmode=require&channel_binding=require"
-
-# Optional unpooled direct connection (uncomment when using prisma migrate or introspection if needed)
-# DATABASE_URL_UNPOOLED="postgresql://<NEON_USER>:<NEON_PASSWORD>@<NEON_HOST>/<NEON_DB>?sslmode=require&channel_binding=require"
-
-# Server port (optional)
-PORT=4000
-```
-
-Notes about Neon and Prisma:
-
-- Neon provides a cloud Postgres endpoint that is usually accessed via a pooled connection URL (the default "DATABASE_URL" above). This is the recommended URL to use at runtime.
-- For some Prisma CLI commands (older Prisma versions or specific setups) you might need an "unpooled" direct connection. If your Prisma commands fail with pooling-related errors, copy the unpooled URL into `DATABASE_URL_UNPOOLED` and set that when running migrations locally. Newer Prisma releases handle pooling better.
-- Example run (using the unpooled URL environment variable):
-
-```bash
-# Linux / macOS (bash/fish - export the unpooled URL for the command only)
-DATABASE_URL="$(cat .env | sed -n 's/^DATABASE_URL_UNPOOLED=\"\(.*\)\"$/\1/p')" npx prisma migrate deploy
-```
-
-If you're using Neon, make sure to create a DB and user in the Neon dashboard and paste the provided connection string into your `backend/.env`.
-
----
-
-### 💻 Frontend Setup
+### Frontend only
 
 ```bash
 cd frontend
-cp .env.example .env  # Add your backend base URL
 npm install
-npm dev              # Starts Vite server
+npm run dev
 ```
 
-Contents of `.env`:
+---
 
+## 🔧 Environment Variables
+
+### Backend
+
+Example `.env`:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DBNAME"
+PORT=4000
 ```
+
+### Frontend
+
+Example `.env`:
+
+```env
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
 ---
 
-## 📬 API Routes (Tested with Thunder Client)
+## 📬 API Routes
 
-| Method | Description       |
-| ------ | ----------------- |
-| GET    | Fetch all records |
-| POST   | Add a new record  |
-| PUT    | Update by ID      |
-| DELETE | Delete by ID      |
-
----
-
-## ✨ Features
-
-- 🔄 Full CRUD functionality
-- 🎯 Clean React routing with shared Home menu
-- 🔐 Secure environment configuration with `.env`
-- 🧪 Thunder client-tested API
-- 📦 Modern dev experience with `Vite` and `tsx`
-- 🧠 Strengthens full-stack dev skills (PERN + TypeScript)
+| Method | Route            | Description           |
+| ------ | ---------------- | --------------------- |
+| GET    | `/api/users`     | Fetch all records     |
+| POST   | `/api/users`     | Add a new record      |
+| PUT    | `/api/users/:id` | Update a record by ID |
+| DELETE | `/api/users/:id` | Delete a record by ID |
 
 ---
 
----
+## ✅ Summary
 
-## 🏁 Conclusion
+This project is a solid PERN + TypeScript CRUD app with:
 
-This project helped solidify full-stack fundamentals with PostgreSQL and TypeScript. It's a strong foundation for scaling into more complex applications and backend architectures.
-Still few updates needed and gonna improve it...
+- PostgreSQL + Prisma
+- Express backend
+- React frontend
+- Docker + Compose
+- Nginx reverse proxy
 
----
+## Still more improvements can be added later, but the current setup is already strong and practical for learning and deployment.
