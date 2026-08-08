@@ -10,7 +10,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
+    //pinned to prisma 6 from 7 bcos of that env arguemnt needed for the docker to validate it..If not then we can completely comment it out
+    // NOTE :::: if u r running it in the localhost (means not via Dockerfile or compose) then comment this below line ,
+   url = env("DATABASE_URL")
 }
 
 model User {

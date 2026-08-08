@@ -1,6 +1,5 @@
 import {PrismaClient} from '@prisma/client';
 import valkey from '../lib/valkey.js'
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient();
 const USER_CACHE_PREFIX = "user:";
